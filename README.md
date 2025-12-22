@@ -41,3 +41,69 @@ Sudah Login: Tampil menu "Home", "Data Artikel", dan "Logout (Nama User)" .
 <img width="1365" height="767" alt="image" src="https://github.com/user-attachments/assets/3981ca82-13a8-4d30-90f7-79bb0d32012a" />
 <img width="1365" height="767" alt="image" src="https://github.com/user-attachments/assets/3e7b20b1-b981-43a8-ae41-db4fe0f79f9d" />
 
+# Lanjutan: Praktikum 13 & 14 (Pagination & Pencarian)
+
+## 📝 Deskripsi
+Pada tahap ini, aplikasi dikembangkan untuk menangani data dalam jumlah besar. Fitur **Pagination** digunakan untuk memecah tampilan data menjadi beberapa halaman agar tidak menumpuk, sedangkan fitur **Pencarian** (Search) memungkinkan pengguna menemukan artikel tertentu berdasarkan kata kunci.
+
+---
+
+## 🚀 Fitur Baru yang Ditambahkan
+
+### 1. Pagination (Paging) [Praktikum 13]
+Fitur ini membatasi jumlah data yang tampil per halaman (contoh: 5 artikel per halaman).
+* **Logika:** Menggunakan query SQL `LIMIT` dan `OFFSET`.
+* **Navigasi:** Tombol *Previous*, Angka Halaman, dan *Next*.
+* **Styling:** Kustomisasi CSS untuk tombol pagination agar terlihat rapi.
+
+### 2. Pencarian Data (Searching) [Praktikum 14]
+Fitur untuk memfilter data artikel berdasarkan judul atau konten.
+* **Logika:** Menggunakan klausa SQL `WHERE judul LIKE '%keyword%'`.
+* **Integrasi:** Pencarian terintegrasi dengan Pagination. Artinya, saat berpindah halaman pada hasil pencarian, kata kunci pencarian tidak hilang (tetap tersimpan di URL dengan `&q=...`).
+
+---
+
+## 🛠️ Langkah Pengerjaan
+
+### A. Persiapan Data (Data Dummy)
+Menambahkan kolom `gambar`, `kategori`, `penulis`, dan `tanggal` pada tabel `artikel`, serta memasukkan 12+ data dummy agar fitur pagination terlihat efeknya.
+
+```sql
+-- Contoh Query Data Dummy
+INSERT INTO artikel (judul, isi, kategori, penulis) VALUES 
+('Belajar PHP', '...', 'Programming', 'Agung'),
+('Tutorial Bootstrap', '...', 'Frontend', 'Budi'),
+... (dan seterusnya sampai 12 data);
+```
+
+B. Implementasi Kode (module/artikel/index.php)
+Memodifikasi query utama untuk menggabungkan filter pencarian dan batasan halaman.
+
+Snippet Logika Utama:
+
+PHP
+
+// 1. Tangkap Pencarian
+$q = $_GET['q'] ?? "";
+$where = $q ? " WHERE judul LIKE '%$q%'" : "";
+
+// 2. Konfigurasi Pagination
+$limit = 5;
+$page = $_GET['page'] ?? 1;
+$offset = ($page - 1) * $limit;
+
+// 3. Query Gabungan
+$sql = "SELECT * FROM artikel $where LIMIT $offset, $limit";
+
+C. Update UI
+Menambahkan Form Pencarian di atas tabel dan navigasi Pagination di bawah tabel menggunakan komponen Bootstrap dan CSS kustom.
+
+<img width="1365" height="767" alt="image" src="https://github.com/user-attachments/assets/ca727ab0-c6fa-4865-8e61-1e3259a4eaa5" />
+<img width="1365" height="767" alt="image" src="https://github.com/user-attachments/assets/7d580bf8-690e-4fff-b24e-720087c6db1e" />
+<img width="1365" height="767" alt="image" src="https://github.com/user-attachments/assets/99cc7321-c847-4383-8417-24a05c302a95" />
+<img width="1363" height="766" alt="image" src="https://github.com/user-attachments/assets/0dba96fd-dfc7-403d-ae9f-8054ad728c32" />
+
+
+
+
+
